@@ -1,57 +1,49 @@
 package org.example;
 
-import java.util.Scanner;
-
+import java.util.Random;
 public class Main {
 
-    public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-        int opcion, total = 0, dinero, cambio, productosComprados = 0;
+        public static void main(String[] args) {
+            Random random = new Random();
 
-                do {
-                    System.out.println("\n--- Máquina De Alimentos ---");
-                    System.out.println("1. Mani - $2000");
-                    System.out.println("2. Galletas - $1500");
-                    System.out.println("3. Chocolate - $2500");
-                    System.out.println("4. Jugo Hit  - $3000");
-                    System.out.println("5. Coca-Cola - $3500");
-                    System.out.println("6. Pagar y salir");
-                    System.out.print("Seleccione un producto: ");
-                    opcion = scanner.nextInt();
+            String[] opciones = {"Piedra", "Papel", "Tijera"};
+            int puntos1 = 0;
+            int puntos2 = 0;
 
-                    switch (opcion) {
-                        case 1 -> total += 2000;
-                        case 2 -> total += 1500;
-                        case 3 -> total += 2500;
-                        case 4 -> total += 3000;
-                        case 5 -> total += 3500;
-                        case 6 -> System.out.println("Total a pagar: $" + total);
-                        default -> System.out.println("Opción inválida.");
-                    }
+            System.out.println("Comienza el juego");
 
-                    if (opcion >= 1 && opcion <= 5) {
-                        productosComprados++;
-                    }
+            do {
+                int eleccion1 = random.nextInt(3);
+                int eleccion2 = random.nextInt(3);
 
-                } while (opcion != 6 && productosComprados < 5);
+                String jugada1 = opciones[eleccion1];
+                String jugada2 = opciones[eleccion2];
 
-                if (total > 0) {
-                    System.out.print("Ingrese su dinero: ");
-                    dinero = scanner.nextInt();
+                System.out.println(" Jugador 1 : " + jugada1);
+                System.out.println(" Jugador 2 : " + jugada2);
 
-                    if (dinero < total) {
-                        System.out.println("Dinero insuficiente. Compra cancelada.");
-                    } else {
-                        cambio = dinero - total;
-                        System.out.println("Compra realizada. Su cambio es: $" + cambio);
-                    }
+                if (jugada1.equals(jugada2)) {
+                    System.out.println("Empate.");
+                } else if ((jugada1.equals("Piedra") && jugada2.equals("Tijera")) ||
+                        (jugada1.equals("Papel") && jugada2.equals("Piedra")) ||
+                        (jugada1.equals("Tijera") && jugada2.equals("Papel"))) {
+                    System.out.println("Jugador 1 gana");
+                    puntos1++;
+                } else {
+                    System.out.println("jugador 2  gana.");
+                    puntos2++;
                 }
 
-                System.out.println("Gracias por su compra.");
-                scanner.close();
-            }
+                System.out.println("Marcador Jugador 1 : " + puntos1);
+                System.out.println("Marcador Jugador 2 : " + puntos2);
+
+            } while (puntos1 < 2 && puntos2 < 2);
+
+            System.out.println("\n" + (puntos1 == 2 ? "Jugador 1 ganaste" : "Jugador 2 ganaste "));
         }
+    }
+
 
 
 
