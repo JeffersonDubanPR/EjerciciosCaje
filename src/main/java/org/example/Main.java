@@ -1,46 +1,54 @@
 package org.example;
 
 import java.util.Random;
+import java.util.Scanner;
+
 public class Main {
 
-
-        public static void main(String[] args) {
+    public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
             Random random = new Random();
 
-            String[] opciones = {"Piedra", "Papel", "Tijera"};
-            int puntos1 = 0;
-            int puntos2 = 0;
-
-            System.out.println("Comienza el juego");
+            String[] tipos = {"Agua", "Fuego", "Planta", "Eléctrico"};
+            String opcion;
 
             do {
-                int eleccion1 = random.nextInt(3);
-                int eleccion2 = random.nextInt(3);
 
-                String jugada1 = opciones[eleccion1];
-                String jugada2 = opciones[eleccion2];
+                String atacante = tipos[random.nextInt(4)];
+                String defensor = tipos[random.nextInt(4)];
 
-                System.out.println(" Jugador 1 : " + jugada1);
-                System.out.println(" Jugador 2 : " + jugada2);
+                int ataque = random.nextInt(100) + 1;
+                int defensa = random.nextInt(100) + 1;
 
-                if (jugada1.equals(jugada2)) {
-                    System.out.println("Empate.");
-                } else if ((jugada1.equals("Piedra") && jugada2.equals("Tijera")) ||
-                        (jugada1.equals("Papel") && jugada2.equals("Piedra")) ||
-                        (jugada1.equals("Tijera") && jugada2.equals("Papel"))) {
-                    System.out.println("Jugador 1 gana");
-                    puntos1++;
-                } else {
-                    System.out.println("jugador 2  gana.");
-                    puntos2++;
-                }
 
-                System.out.println("Marcador Jugador 1 : " + puntos1);
-                System.out.println("Marcador Jugador 2 : " + puntos2);
+                double efectividad = calcularefectividad(atacante, defensor);
+                double dano = 50 * ((double) ataque / defensa) * efectividad;
 
-            } while (puntos1 < 2 && puntos2 < 2);
 
-            System.out.println("\n" + (puntos1 == 2 ? "Jugador 1 ganaste" : "Jugador 2 ganaste "));
+                System.out.println("Atacante: " + atacante + " (Ataque: " + ataque + ")");
+                System.out.println("Defensor: " + defensor + " (Defensa: " + defensa + ")");
+                System.out.println("Efectividad: " + efectividad);
+                System.out.println("Dano causado: " + dano);
+
+
+                System.out.print("Siguente Batalla (1/2): ");
+                opcion = scanner.nextLine().toLowerCase();
+
+            } while (opcion.equals("1"));
+
+            System.out.println("Fin");
+            scanner.close();
+        }
+
+
+        public static double calcularefectividad(String atacante, String defensor) {
+            return switch (atacante) {
+                case "Agua" -> defensor.equals("Fuego") ? 2 : defensor.equals("Planta") ? 0.5 : 1;
+                case "Fuego" -> defensor.equals("Planta") ? 2 : defensor.equals("Agua") ? 0.5 : 1;
+                case "Planta" -> defensor.equals("Agua") ? 2 : defensor.equals("Fuego") ? 0.5 : 1;
+                case "Eléctrico" -> defensor.equals("Agua") ? 2 : defensor.equals("Planta") ? 0.5 : 1;
+                default -> 1;
+            };
         }
     }
 
